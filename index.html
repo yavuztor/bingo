@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <title>Tombala</title>
+        <style type="text/css">
+            .start {
+                padding: 20px;
+                min-height: 100%;
+                width: 100%;
+            }
+
+            .bag {}
+
+            .past {}
+
+            .number {
+                font-size: 48px;
+                font-weight: bold;
+                display: inline-block;
+                text-align: center;
+                border: 1px solid #999;
+                background-color: white;
+                width: 2em;
+                height: 2em;
+                line-height: 2em;
+            }
+
+            .pastNumber {
+                font-size: 48px;
+                font-weight: bold;
+                display: inline-block;
+                text-align: center;
+                border: 1px solid #999;
+                background-color: #eee;
+                width: 2em;
+                height: 2em;
+                line-height: 2em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Tombala</h1>
+        <div class="start page">
+            <h1>Tombala oyna</h1>
+            <div>
+                <label for="maxNumber">En buyuk sayi</label>
+                <input type="number" id="maxNumber" value="50" />
+                <button type="button" onclick="startClicked()">BASLA</button>
+            </div>
+            <div style="padding: 1em; text-align: center">
+                <div><span id="drawsLeft">50</span> cekilis kaldi</div>
+                <button type="button" onclick="drawNumberFromBag()">Torbadan Cek</button>
+            </div>
+            <div class="past"></div>
+        </div>
+
+        <script type="text/javascript">
+            var state = {bag: this.generateNumbers(50), past: []};
+
+            function startClicked() {
+                var max = parseInt(document.getElementById('maxNumber').value);
+                state = {
+                    bag: generateNumbers(max),
+                    past: []
+                };
+                render();
+            }
+
+            function generateNumbers(max) {
+                var numbers = [];  
+                for (var i = 1; i <= max; i++) numbers.push(i);
+                return numbers;
+            }
+
+            function render() {
+                document.getElementById('drawsLeft').innerHTML = state.bag.length;
+                document.querySelector('.start .past').innerHTML = renderPastNumbers();
+            }
+
+            function renderPastNumbers() {
+                return state.past.map(function(n){ return '<div class="pastNumber">' + n + '</div>'; });
+            }
+
+            function drawNumberFromBag() {
+                var i =  Math.floor(Math.random() * state.bag.length);
+                var number = state.bag[i];
+                state = {
+                    bag: state.bag.filter(function(n){ return n != number; }),
+                    past: [number].concat(state.past)
+                };
+                render();
+            }
+
+        </script>
+    </body>
+</html>
